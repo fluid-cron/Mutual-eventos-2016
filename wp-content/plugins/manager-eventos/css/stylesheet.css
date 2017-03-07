@@ -1,0 +1,11 @@
+.fixed .column-author, .fixed .column-date, .fixed .column-format,
+.fixed .column-links, .fixed .column-parent, .fixed .column-posts 
+{
+    /*width: 10%;*/
+    font-size: 12px;
+    /*text-align: center; width:65px !important; overflow:hidden*/
+}
+
+.ui-datepicker{
+	font: 90% "Trebuchet MS", sans-serif !important;
+}
