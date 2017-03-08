@@ -11,10 +11,11 @@
  *
  * @package Mutual_eventos
  */
+$email = sanitize_text_field($_GET["email"]);
+$evento = sanitize_text_field($_GET["evento"]);
 
-get_header(); ?>
-
-certificado
-
-<?php
-get_footer();
+if( $email!="" && $evento!="" ) {
+	generarPDF($email,$evento);
+}
+die;
+?>

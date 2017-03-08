@@ -12,7 +12,7 @@
  * @package Mutual_eventos
  */
 
-$email = $_GET['email'];
+$email = sanitize_text_field($_GET['email']);
 
 get_header(); ?>
 

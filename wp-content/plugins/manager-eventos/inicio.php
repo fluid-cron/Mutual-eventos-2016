@@ -108,7 +108,7 @@ if( $query->have_posts() ){
 	<div id="datepicker"></div>
 
 	<ul class="subsubsub">
-		<li class="all"><b>Evento actualmente activo</b> : <?php echo $evento_nombre; ?></li>
+		<!--li class="all"><b>Evento actualmente activo</b> : <?php //echo $evento_nombre; ?></li-->
 		<li class="all"><b>Total Inscritos</b> : <span class="count" id="publicados_count" ><?php echo $total; ?></span></li>
 	</ul>				
 

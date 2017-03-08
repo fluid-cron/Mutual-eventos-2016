@@ -13,7 +13,7 @@ function guardarInscripcion() {
 	global $evento_activo;
 	global $evento_nombre;
 
-	$email = sanitize_text_field($_POST["email"]);
+	$email = $_POST["email"];
 
 	$query = "SELECT email FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email'";
 	$result = $wpdb->get_results($query);
@@ -115,12 +115,12 @@ function guardarEncuesta() {
 	global $evento_activo;
 	global $evento_nombre;
 
-	$email       = sanitize_text_field($_POST["email"]);
-	$respuesta_1 = sanitize_text_field($_POST["respuesta_1"]);
-	$respuesta_2 = sanitize_text_field($_POST["respuesta_2"]);
-	$respuesta_3 = sanitize_text_field($_POST["respuesta_3"]);
-	$respuesta_4 = sanitize_text_field($_POST["respuesta_4"]);
-	$comentario  = sanitize_text_field($_POST["comentario"]);
+	$email       = $_POST["email"];
+	$respuesta_1 = $_POST["respuesta_1"];
+	$respuesta_2 = $_POST["respuesta_2"];
+	$respuesta_3 = $_POST["respuesta_3"];
+	$respuesta_4 = $_POST["respuesta_4"];
+	$comentario = $_POST["comentario"];
 
 	if( $email!="" && $evento_activo!="" ) {
 
@@ -271,56 +271,71 @@ function generarPDF($email,$evento) {
 
 	if( count($result)>0 ) {
 
-	//datos evento
-	$posts = get_posts(array(
-		'name'      => $evento,
-		'post_type' => 'eventos'
-	));
+		echo "existe en la db de mutual asistencia";
 
-	if($posts) {
-		foreach($posts as $post) {
-			echo $post->post_title."<br>";
-			echo $post->post_excerpt."<br>";
-			echo $post->post_content."<br>";
-			echo get_field('fecha')."<br>";
-			echo get_field('lugar')."<br>";
-			echo get_field('imagen')."<br>";
-			echo get_permalink($post->ID)."<br>";
-			echo '<a href="'.get_permalink($post->ID).'">'.$post->post_title.'</a>';
-		}
-	}	
+	}else{
+		echo "no existe en la mutual de asistencia";
+	}
 
-	die;	
+	die;
 
+	// create new PDF document
 	$pdf = new MyPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
+	// set document information
 	$pdf->SetCreator(PDF_CREATOR);
 	$pdf->SetAuthor('Mutual');
 	$pdf->SetTitle('Diploma');
 	$pdf->SetSubject('PDF');
 	$pdf->SetKeywords('PDF');
 
+	// set default header data
+	//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
+	//$pdf->setFooterData(array(0,64,0), array(0,64,128));
+
+	// set header and footer fonts
+	//$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+	//$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+	// set default monospaced font
 	$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
+	// set margins
 	$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+	//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+	//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
+	// set auto page breaks
 	$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
+	// set image scale factor
 	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
+	// set some language-dependent strings (optional)
 	if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 		require_once(dirname(__FILE__).'/lang/eng.php');
 		$pdf->setLanguageArray($l);
 	}
 
+	// ---------------------------------------------------------
+
+	// set default font subsetting mode
 	$pdf->setFontSubsetting(true);
 
+	// Set font
+	// dejavusans is a UTF-8 Unicode font, if you only need to
+	// print standard ASCII chars, you can use core fonts like
+	// helvetica or times to reduce file size.
 	$pdf->SetFont('dejavusans', '', 14, '', true);
 
+	// Add a page
+	// This method has several options, check the source code documentation for more information.
 	$pdf->AddPage('L');
 
+	// set text shadow effect
 	$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
 
+	// Set some content to print
 $html = <<<EOF
 <!-- EXAMPLE OF CSS STYLE -->
 <style>
@@ -428,19 +443,23 @@ $html = <<<EOF
 </table>
 EOF;
 
+	// Print text using writeHTMLCell()
 	$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+	// Close and output PDF document
+	// This method has several options, check the source code documentation for more information.
+	//$pdf->Output('example_001.pdf', 'I');	
 
 	$time = time();
 	$rand = rand(1,9887657139864654);
 	$pdf_name = $rand+$time;	
 
+	//$tempDir = get_template_directory().'/temp/pdf/'.$pdf_name.".pdf"; 
+	//$pdf->Output($tempDir, 'F');
+	//$pdf->Output($pdf_name.".pdf", 'I');
 	$pdf->Output($pdf_name.".pdf", 'D');	
 
 	return "ok";
-
-	}else{
-		echo "Imposible imprimir su certificado.";
-	}
 
 	die;
 

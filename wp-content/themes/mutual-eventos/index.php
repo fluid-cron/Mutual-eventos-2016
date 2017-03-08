@@ -1,26 +1,34 @@
 <?php get_header(); ?>
 <?php
 
-	$email = $_GET["email"];
+	$participacion_activa = get_field("desactivar_participacion","option");
 
-	$posts = get_posts(array(
-		'name'      => $evento_activo,
-		'post_type' => 'eventos'
-	));
+	if( $participacion_activa==1 ) {
+		echo "Participar en los eventos se encuentra temporalmente desactivado";	
+	}else{
 
-	if($posts) {
-		foreach($posts as $post) {
-			echo "Evento activo"."<br>";
-			echo $post->post_title."<br>";
-			echo $post->post_excerpt."<br>";
-			echo $post->post_content."<br>";
-			echo get_field('fecha')."<br>";
-			echo get_field('lugar')."<br>";
-			echo get_field('imagen')."<br>";
-			echo get_permalink($post->ID)."<br>";
-			echo '<a href="'.get_permalink($post->ID).'">'.$post->post_title.'</a>';
+	$email = sanitize_text_field($_GET["email"]);
+
+	if( estaInscrito($email)==0 ) {
+
+		$posts = get_posts(array(
+			'name'      => $evento_activo,
+			'post_type' => 'eventos'
+		));
+
+		if($posts) {
+			foreach($posts as $post) {
+				echo "Evento activo"."<br>";
+				echo $post->post_title."<br>";
+				echo $post->post_excerpt."<br>";
+				echo $post->post_content."<br>";
+				echo get_field('fecha')."<br>";
+				echo get_field('lugar')."<br>";
+				echo get_field('imagen')."<br>";
+				echo get_permalink($post->ID)."<br>";
+				echo '<a href="'.get_permalink($post->ID).'">'.$post->post_title.'</a>';
+			}
 		}
-	}
 
 ?>
 <br>
@@ -49,5 +57,11 @@
 </div>
 
 <?php
+
+	}else{
+		echo "ya esta inscrito en el evento";
+	}
+}
+
 get_footer();
 
