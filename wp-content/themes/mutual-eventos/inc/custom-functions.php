@@ -112,8 +112,8 @@ add_action( 'wp_ajax_nopriv_guardarEncuesta', 'guardarEncuesta' );
 function guardarEncuesta() {
 
 	global $wpdb;
-	global $evento_activo;
-	global $evento_nombre;
+	//global $evento_activo;
+	//global $evento_nombre;
 
 	$email       = sanitize_text_field($_POST["email"]);
 	$respuesta_1 = sanitize_text_field($_POST["respuesta_1"]);
@@ -121,10 +121,11 @@ function guardarEncuesta() {
 	$respuesta_3 = sanitize_text_field($_POST["respuesta_3"]);
 	$respuesta_4 = sanitize_text_field($_POST["respuesta_4"]);
 	$comentario  = sanitize_text_field($_POST["comentario"]);
+	$evento      = sanitize_text_field($_POST["evento"]);
 
-	if( $email!="" && $evento_activo!="" ) {
+	if( $email!="" && $evento!="" ) {
 
-		$query = "SELECT email FROM {$wpdb->prefix}encuesta_satisfaccion WHERE email='$email' and evento='$evento_activo'";
+		$query = "SELECT email FROM {$wpdb->prefix}encuesta_satisfaccion WHERE email='$email' and evento='$evento'";
 		$result = $wpdb->get_results($query);
 
 		$encuesta_satisfaccion = count($result);	
@@ -140,7 +141,7 @@ function guardarEncuesta() {
 					'respuesta_4' => $respuesta_4,
 					'comentario'  => $comentario,
 					'email'       => $email,
-					'evento'      => $evento_activo
+					'evento'      => $evento
 				),
 				array(
 					'%s',
@@ -167,18 +168,32 @@ function guardarEncuesta() {
 }
 
 //se usa en page-encuesta
-function respondioEncuesta($email) {
+function respondioEncuesta($email,$evento) {
 
 	global $wpdb;
-	global $evento_activo;
 
-	$query = "SELECT email FROM {$wpdb->prefix}encuesta_satisfaccion WHERE email='$email' and evento='$evento_activo'";
+	$query = "SELECT email 
+			  FROM {$wpdb->prefix}encuesta_satisfaccion 
+			  WHERE email='$email' and evento='$evento'";			  
 	$result = $wpdb->get_results($query);
 
-	$encuesta_satisfaccion = count($result);	
+	$encuesta_satisfaccion = count($result);
 
 	if( $encuesta_satisfaccion==0 ) {
-		return 0;
+
+		$query = "SELECT email 
+				  FROM {$wpdb->prefix}usuarios_mutual_asistencia 
+				  WHERE email='$email' and evento='$evento'";			  
+		$result = $wpdb->get_results($query);
+
+		$asistencia = count($result);
+
+		if( $asistencia>0 ) {
+			return 0;
+		}else{
+			return 2;
+		}
+		
 	}else{
 		return 1;
 	}

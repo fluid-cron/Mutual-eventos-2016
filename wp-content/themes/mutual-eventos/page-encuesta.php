@@ -12,18 +12,23 @@
  * @package Mutual_eventos
  */
 
-$email = sanitize_text_field($_GET['email']);
+$email  = sanitize_text_field($_GET['email']);
+$evento = sanitize_text_field($_GET['evento']);
 
 get_header(); ?>
 
 	<?php  
-		if( $email!="" ) :
-		if( respondioEncuesta($email)==0 ) {
+		if( $email!="" ) {
+
+		$res = respondioEncuesta($email,$evento);
+
+		if( $res==0 ) {
 	?>
 		<form class="dissapear" id="form-encuesta" method="post">
 
 			<input name="email" type="hidden" value="<?php echo $email; ?>">
 			<input name="action" type="hidden" value="guardarEncuesta" >
+			<input name="evento" type="hidden" value="<?php echo $evento;?>" >
 
 			<div class="questions">
 				
@@ -117,14 +122,20 @@ get_header(); ?>
 
 		</form>	
 	<?php		
+		}else if($res==2){
+	?>
+		<div>No tienes permitido responder esta encuesta</div>
+	<?php
 		}else{
 	?>
-		<div>Encuesta ya respondida</div>
+		<div>Encuesta ya respondinda</div>
 	<?php
 		}
-		else:
-			echo "Encuesta ya respondida";
-		endif;
+		}else{
+	?>
+		<div>Encuesta no disponible</div>
+	<?php
+		}
 	?>	
 
 

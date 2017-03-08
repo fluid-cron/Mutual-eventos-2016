@@ -1,5 +1,5 @@
 <?php
-define('WP_DEBUG', true);
+
 $pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
 $tipo    = isset( $_GET['tipo'] ) ? $_GET['tipo'] : "";
 $desde   = isset( $_GET['desde'] ) ? $_GET['desde'] : "";
@@ -68,8 +68,8 @@ $page_links = paginate_links( array(
     'prev_text' => __( '&laquo;', 'text-domain' ),
     'next_text' => __( '&raquo;', 'text-domain' ),
     'total' => $num_of_pages,
-    'current' => $pagenum,
-    'add_args' => array( 'q' => $q )
+    'current' => $pagenum//,
+    //'add_args' => array( 'q' => $q )
 ));
 
 $tipos = "";
