@@ -6,7 +6,7 @@
  *
  * @package Mutual_eventos
  */
-
+die;
 get_header(); ?>
 
 		<?php
@@ -33,7 +33,7 @@ get_header(); ?>
                 ?><ul>
                     <?php foreach( $archivos as $archivo ): 
                     	$file = $archivo["documento"];
-                        print_r($file);
+                        //print_r($file);
                     ?>
                         <li>
                             <a href="<?php echo $file['url']; ?>">

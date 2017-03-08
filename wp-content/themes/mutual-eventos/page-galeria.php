@@ -20,27 +20,23 @@ get_header(); ?>
 	<?php
 		if( $email!="" && $evento!="" ) {
 
-			 $certificado = esc_url(get_permalink(get_page_by_title('descarga certificado')))."?email=".$email."&evento=".$evento;
-			 $galeria     = esc_url(get_permalink(get_page_by_title('galeria')))."?email=".$email."&evento=".$evento;
-
-?>
-			<a href="<?php echo $certificado;?>" >Descargar certificado</a>
-			<br>
-			<a href="<?php echo $galeria;?>" >Ver galeria</a>
-
-<?php
-
 		$posts = get_posts(array(
 			'name'      => $evento,
 			'post_type' => 'eventos'
 		));
 
 		echo "<pre>";
+		print_r($posts);
 		
 		if($posts) {
 			foreach($posts as $post) {
-				$documentos = get_field('contenedor_archivos');
-				print_r($documentos);
+				$images = get_field('galeria');
+				$documentos = get_field('documento');
+				print_r($images);
+
+				foreach ($images as $key) {
+					//echo $key['url'];
+				}
 
 				/*
 				echo $post->post_title."<br>";

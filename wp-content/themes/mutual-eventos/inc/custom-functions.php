@@ -15,31 +15,31 @@ function guardarInscripcion() {
 
 	$email = sanitize_text_field($_POST["email"]);
 
-	$query = "SELECT email FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email'";
+	$query = "SELECT email FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email' AND evento='$evento_activo'";
 	$result = $wpdb->get_results($query);
 
 	$usuario_mutual = count($result);
 
-	if( $usuario_mutual>0 ){
+	if( $usuario_mutual>0 ) {
 
 		//echo "existe en la base de mutual puede inscribirse";
 
-		$query = "SELECT email FROM {$wpdb->prefix}inscripcion_eventos WHERE email='$email' and evento='$evento_activo'";
+		$query = "SELECT email FROM {$wpdb->prefix}inscripcion_eventos WHERE email='$email' AND evento='$evento_activo'";
 		$result = $wpdb->get_results($query);
 
 		$usuario_inscripcion = count($result);
 
-		if( $usuario_inscripcion==0 ){
+		if( $usuario_inscripcion==0 ) {
 
 			//echo "se puede inscribir a evento";
 
 			if( $email!="" && $evento_activo!="" ) {
 
-				$qr = generarQR($email);
+				$qr = generarQR($email,$evento_activo);
 
-				if( $qr!="error" ){
+				if( $qr!="error" ) {
 
-					$query = "SELECT * FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email'";
+					$query = "SELECT * FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email' AND evento='$evento_activo'";
 					$result = $wpdb->get_row($query);					
 					
 					$wpdb->insert(
@@ -112,8 +112,6 @@ add_action( 'wp_ajax_nopriv_guardarEncuesta', 'guardarEncuesta' );
 function guardarEncuesta() {
 
 	global $wpdb;
-	//global $evento_activo;
-	//global $evento_nombre;
 
 	$email       = sanitize_text_field($_POST["email"]);
 	$respuesta_1 = sanitize_text_field($_POST["respuesta_1"]);
@@ -203,7 +201,7 @@ function respondioEncuesta($email,$evento) {
 add_action( 'wp_ajax_generarQR', 'generarQR' );
 add_action( 'wp_ajax_nopriv_generarQR', 'generarQR' );
 
-function generarQR($email) {
+function generarQR($email,$evento) {
 
 	require_once(__DIR__.'/libraries/phpqr/qrlib.php');
 
@@ -214,7 +212,7 @@ function generarQR($email) {
 	$rand = rand(1,9887657139864654);
 	$qr_name = $rand+$time;	
 
-	$query = "SELECT * FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email'";
+	$query = "SELECT * FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email' AND evento='$evento'";
 	$result = $wpdb->get_row($query);
 
 	if( count($result)>0 ) {
@@ -287,7 +285,7 @@ function generarPDF($email,$evento) {
 	if( count($result)>0 ) {
 
 	//datos evento
-	$posts = get_posts(array(
+	/*$posts = get_posts(array(
 		'name'      => $evento,
 		'post_type' => 'eventos'
 	));
@@ -304,8 +302,7 @@ function generarPDF($email,$evento) {
 			echo '<a href="'.get_permalink($post->ID).'">'.$post->post_title.'</a>';
 		}
 	}	
-
-	die;	
+	*/
 
 	$pdf = new MyPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -319,18 +316,18 @@ function generarPDF($email,$evento) {
 
 	$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 
-	$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+	//$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
-	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+	//$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-	if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+	/*if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 		require_once(dirname(__FILE__).'/lang/eng.php');
 		$pdf->setLanguageArray($l);
-	}
+	}*/
 
 	$pdf->setFontSubsetting(true);
 
-	$pdf->SetFont('dejavusans', '', 14, '', true);
+	$pdf->SetFont('courierB', '', 14, '', true);
 
 	$pdf->AddPage('L');
 
