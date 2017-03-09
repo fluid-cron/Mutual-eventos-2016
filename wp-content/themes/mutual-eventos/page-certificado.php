@@ -12,21 +12,26 @@
  * @package Mutual_eventos
  */
 
-$email  = sanitize_text_field($_GET['email']);
-$evento = sanitize_text_field($_GET['evento']);
+$email  = sanitize_text_field(@$_GET['email']);
+$evento = sanitize_text_field(@$_GET['evento']);
 
 get_header(); ?>
 
 	<?php
+		if( asistioEvento($email,$evento) ) {
+
 		if( $email!="" && $evento!="" ) {
 
 			 $certificado = esc_url(get_permalink(get_page_by_title('descarga certificado')))."?email=".$email."&evento=".$evento;
 			 $galeria     = esc_url(get_permalink(get_page_by_title('galeria')))."?email=".$email."&evento=".$evento;
+			 $encuesta     = esc_url(get_permalink(get_page_by_title('encuesta')))."?email=".$email."&evento=".$evento;
 
 ?>
 			<a href="<?php echo $certificado;?>" >Descargar certificado</a>
 			<br>
 			<a href="<?php echo $galeria;?>" >Ver galeria</a>
+			<br>
+			<a href="<?php echo $encuesta;?>" >Reponder encuesta</a>
 
 <?php
 
@@ -56,8 +61,11 @@ get_header(); ?>
 		}		
 
 		}else{
-			echo "No tiene permitido acceder a esta url";
+			echo "No tiene permitido ver tu certificado";
 		}
+	}else{
+		echo "No tiene permitido ver tu certificado";
+	}
 
 	?>		
 <?php

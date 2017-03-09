@@ -45,12 +45,18 @@ function guardarInscripcion() {
 					$wpdb->insert(
 						$wpdb->prefix.'inscripcion_eventos',
 						array(
-							'nombre' => $result->nombre,
-							'email'  => $email,
-							'evento' => $evento_activo,
-							'qr'     => $qr
+							'nombre'   => $result->nombre,
+							'cargo'    => $result->cargo,
+							'empresa'  => $result->empresa,
+							'email'    => $email,
+							'telefono' => $result->telefono,
+							'evento'   => $evento_activo,
+							'qr'       => $qr
 						),
 						array(
+							'%s',
+							'%s',
+							'%s',
 							'%s',
 							'%s',
 							'%s',
@@ -88,12 +94,12 @@ function guardarInscripcion() {
 }
 
 //se usa en index para verificar si ya se inscribio al evento actual
-function estaInscrito($email) {
+function estaInscrito($email,$evento) {
 
 	global $wpdb;
-	global $evento_activo;
+	//global $evento_activo;
 
-	$query = "SELECT email FROM {$wpdb->prefix}inscripcion_eventos WHERE email='$email' and evento='$evento_activo'";
+	$query = "SELECT email FROM {$wpdb->prefix}inscripcion_eventos WHERE email='$email' and evento='$evento'";
 	$result = $wpdb->get_results($query);
 
 	$inscripcion_eventos = count($result);	
@@ -165,7 +171,7 @@ function guardarEncuesta() {
 
 }
 
-//se usa en page-encuesta
+//se usa en page-encuesta para verificar si el ususario ya respondio la encuesta
 function respondioEncuesta($email,$evento) {
 
 	global $wpdb;
@@ -194,6 +200,26 @@ function respondioEncuesta($email,$evento) {
 		
 	}else{
 		return 1;
+	}
+
+}
+
+//se usa para verificar si la persona efectivamente asistio al evento en page-certificado
+function asistioEvento($email,$evento) {
+
+	global $wpdb;
+
+	$query = "SELECT email 
+			  FROM {$wpdb->prefix}usuarios_mutual_asistencia 
+			  WHERE email='$email' and evento='$evento'";			  
+	$result = $wpdb->get_results($query);
+
+	$asistio = count($result);
+
+	if( $asistio>0 ) {
+		return 1;		
+	}else{
+		return 0;
 	}
 
 }
@@ -240,9 +266,6 @@ function generarQR($email,$evento) {
 	die;
 
 }
-
-//add_action( 'wp_ajax_generarPDF', 'generarPDF' );
-//add_action( 'wp_ajax_nopriv_generarPDF', 'generarPDF' );
 
 function generarPDF($email,$evento) {
 

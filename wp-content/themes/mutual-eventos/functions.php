@@ -118,7 +118,6 @@ add_action( 'widgets_init', 'mutual_eventos_widgets_init' );
  * Load Jetpack compatibility file.
  */
 //require get_template_directory() . '/inc/jetpack.php';
-
 show_admin_bar(false);
 require get_template_directory() . '/inc/custom-script-css.php';
 require get_template_directory() . '/inc/custom-post.php';

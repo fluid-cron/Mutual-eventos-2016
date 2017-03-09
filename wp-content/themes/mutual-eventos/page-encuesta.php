@@ -12,13 +12,13 @@
  * @package Mutual_eventos
  */
 
-$email  = sanitize_text_field($_GET['email']);
-$evento = sanitize_text_field($_GET['evento']);
+$email  = sanitize_text_field(@$_GET['email']);
+$evento = sanitize_text_field(@$_GET['evento']);
 
 get_header(); ?>
 
 	<?php  
-		if( $email!="" ) {
+		if( $email!="" && $evento!="" ) {
 
 		$res = respondioEncuesta($email,$evento);
 

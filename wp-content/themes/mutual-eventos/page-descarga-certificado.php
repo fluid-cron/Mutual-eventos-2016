@@ -12,13 +12,13 @@
  * @package Mutual_eventos
  */
 
-$email  = sanitize_text_field($_GET["email"]);
-$evento = sanitize_text_field($_GET["evento"]);
+$email  = sanitize_text_field(@$_GET["email"]);
+$evento = sanitize_text_field(@$_GET["evento"]);
 
 if( $email!="" && $evento!="" ) {
 	generarPDF($email,$evento);
 }else{
-	echo "Imposible descargar su info";
+	echo "Imposible descargar su certificado";
 }
 die;
 ?>

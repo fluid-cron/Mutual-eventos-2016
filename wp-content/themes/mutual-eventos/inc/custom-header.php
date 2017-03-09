@@ -28,6 +28,11 @@ function mutual_eventos_custom_header_setup() {
 }
 add_action( 'after_setup_theme', 'mutual_eventos_custom_header_setup' );
 
+// Alter meta tag to prevent all zoom
+add_filter( 'wpex_meta_viewport', function() {
+	return '<meta name="viewport" content="2" />';
+});
+
 if ( ! function_exists( 'mutual_eventos_header_style' ) ) :
 /**
  * Styles the header image and text displayed on the blog.

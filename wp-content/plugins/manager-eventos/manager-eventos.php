@@ -9,7 +9,7 @@
 
 function register_eventos()
 {
-	add_menu_page( 'Inscritos a los Eventos', 'Inscritos a los Eventos', 'manage_options', 'manager-eventos/inicio.php', '', 'dashicons-media-text', 29 );
+	add_menu_page( 'Inscritos a los Eventos', 'Inscritos a los Eventos', 'manage_options', 'manager-eventos/inicio.php', '', 'dashicons-media-text', 28 );
 }
 add_action( 'admin_menu', 'register_eventos' );
 

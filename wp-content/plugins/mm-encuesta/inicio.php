@@ -19,11 +19,11 @@ if( $desde!="" && $hasta!="" && $tipo!="" ) {
 	$new_desde = $partes_desde[2]."-".$partes_desde[0]."-".$partes_desde[1];
 	$new_hasta = $partes_hasta[2]."-".$partes_hasta[0]."-".$partes_hasta[1];
 
-	$where       = ' a.evento="'.$tipo.'" AND b.email=a.email AND left(a.fecha,10) BETWEEN "'.$new_desde.'" AND "'.$new_hasta.'" ';
+	$where       = ' a.evento="'.$tipo.'" AND b.email=a.email AND a.evento=b.evento AND left(a.fecha,10) BETWEEN "'.$new_desde.'" AND "'.$new_hasta.'" ';
 	$where_count = ' WHERE evento="'.$tipo.'" AND left(fecha,10) BETWEEN "'.$new_desde.'" AND "'.$new_hasta.'" ';
 
 } else if( $tipo!="" ) {
-	$where       = ' a.evento="'.$tipo.'" AND b.email=a.email ';
+	$where       = ' a.evento="'.$tipo.'" AND b.email=a.email AND a.evento=b.evento ';
 	$where_count = ' WHERE evento="'.$tipo.'" ';
 } else if( $desde!="" && $hasta!="" ) {
 
@@ -36,8 +36,8 @@ if( $desde!="" && $hasta!="" && $tipo!="" ) {
 	$where       = ' b.email=a.email AND left(a.fecha,10) BETWEEN "'.$new_desde.'" AND "'.$new_hasta.'" ';
 	$where_count = ' WHERE left(fecha,10) BETWEEN "'.$new_desde.'" AND "'.$new_hasta.'" ';	
 
-}else{
-	$where       = ' a.evento="'.$evento_activo.'" AND b.email=a.email ';
+} else {
+	$where       = ' a.evento="'.$evento_activo.'" AND b.email=a.email AND a.evento=b.evento ';
 	$where_count = ' WHERE evento="'.$evento_activo.'" ';	
 	$tipo = $evento_activo;	
 }

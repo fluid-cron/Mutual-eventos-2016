@@ -1,11 +1,5 @@
 jQuery(document).ready(function(jQuery) {
 
-    /*
-    jQuery.validator.addMethod("lettersonly", function(value, element){
-      return this.optional(element) || /^[a-zñáéíóú A-Z]+$/i.test(value);
-    });
-    */
-
     jQuery("#form-eventos").validate({
         ignore :[],
         rules : {
@@ -77,6 +71,22 @@ jQuery(document).ready(function(jQuery) {
     jQuery("#send-button").click(function() {
         jQuery("#form-encuesta").submit();
     });
+
+    jQuery('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        fade: true,
+        asNavFor: '.slider-nav'
+    });
+    jQuery('.slider-nav').slick({
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: false,
+        centerMode: false,
+        focusOnSelect: true
+    });    
 
 });  	
 

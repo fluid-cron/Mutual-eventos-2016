@@ -8,7 +8,7 @@
 */
 function register_encuesta_satisfaccion()
 {
-	add_menu_page( 'Encuestas de satisfacción', 'Encuestas de satisfacción', 'manage_options', 'mm-encuesta/inicio.php', '', 'dashicons-media-text', 30 );
+	add_menu_page( 'Encuestas de satisfacción', 'Encuestas de satisfacción', 'manage_options', 'mm-encuesta/inicio.php', '', 'dashicons-media-text', 27 );
 }
 add_action( 'admin_menu', 'register_encuesta_satisfaccion' );
 
@@ -41,15 +41,15 @@ function export_encuesta_satisfaccion() {
 
 	if( $desde!="" && $hasta!="" && $tipo!="" )
 	{
-		$where = ' b.email=a.email AND a.evento="'.$tipo.'" AND left(a.fecha,10) BETWEEN "'.$desde.'" AND "'.$hasta.'" ';
+		$where = ' b.email=a.email AND a.evento="'.$tipo.'" AND a.evento=b.evento AND left(a.fecha,10) BETWEEN "'.$desde.'" AND "'.$hasta.'" ';
 	}
 	else if( $tipo!="" )
 	{
-		$where = ' b.email=a.email AND a.evento="'.$tipo.'" ';
+		$where = ' b.email=a.email AND a.evento="'.$tipo.'" AND a.evento=b.evento ';
 	}
 	else if( $desde!="" && $hasta!="" )
 	{
-		$where = ' b.email=a.email AND left(a.fecha,10) BETWEEN "'.$desde.'" AND "'.$hasta.'" ';
+		$where = ' b.email=a.email AND a.evento=b.evento AND left(a.fecha,10) BETWEEN "'.$desde.'" AND "'.$hasta.'" ';
 	}
 
 	$entries = $wpdb->get_results( "SELECT * 
