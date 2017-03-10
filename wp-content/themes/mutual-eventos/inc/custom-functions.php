@@ -273,33 +273,9 @@ function generarPDF($email,$evento) {
 
 	require_once(__DIR__.'/libraries/TCPDF/tcpdf.php');
 
-	Class MyPdf extends TCPDF{
-		
-		//Page header
-		public function Header() {
-			/*
-			// Logo
-			$image_file = K_PATH_IMAGES.'logo_example.jpg';
-			$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-			// Set font
-			$this->SetFont('helvetica', 'B', 20);
-			// Title
-			$this->Cell(0, 15, '<< TCPDF Example 003 >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
-			*/
-		}
-
-		// Page footer
-		public function Footer() {
-			/*
-			// Position at 15 mm from bottom
-			$this->SetY(-15);
-			// Set font
-			$this->SetFont('helvetica', 'I', 8);
-			// Page number
-			$this->Cell(0, 10, 'Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
-			*/
-		}
-
+	Class MyPdf extends TCPDF {		
+		public function Header() { }
+		public function Footer() { }
 	}
 
 	$query = "SELECT * FROM {$wpdb->prefix}usuarios_mutual_asistencia WHERE email='$email' AND evento='$evento'";
@@ -307,160 +283,134 @@ function generarPDF($email,$evento) {
 
 	if( count($result)>0 ) {
 
-	//datos evento
-	/*$posts = get_posts(array(
-		'name'      => $evento,
-		'post_type' => 'eventos'
-	));
+	$query = "SELECT * FROM {$wpdb->prefix}inscripcion_eventos WHERE email='$email' AND evento='$evento'";
+	$datos_usuario = $wpdb->get_row($query);
+	
+	$nombre = $datos_usuario->nombre;	
 
-	if($posts) {
-		foreach($posts as $post) {
-			echo $post->post_title."<br>";
-			echo $post->post_excerpt."<br>";
-			echo $post->post_content."<br>";
-			echo get_field('fecha')."<br>";
-			echo get_field('lugar')."<br>";
-			echo get_field('imagen')."<br>";
-			echo get_permalink($post->ID)."<br>";
-			echo '<a href="'.get_permalink($post->ID).'">'.$post->post_title.'</a>';
-		}
-	}	
-	*/
+	//datos evento
+	$args = array(
+		'post_type'		=> 'eventos',
+		'name'		=> $evento
+	);
+	$the_query = new WP_Query( $args );
+
+	if( $the_query->have_posts() ):
+		while( $the_query->have_posts() ) : $the_query->the_post();
+			$nombre_evento = get_the_title();
+			$fecha = get_field('fecha');
+		endwhile;
+	endif;
+
+	$partes_fecha = explode("/",$fecha);
+
+	$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");	
+	$n = ltrim($partes_fecha[1], '0');
+	$fecha_final = ltrim($partes_fecha[0],'0')." de ".$meses[$n-1]." del ".$partes_fecha[2];
+
+	$dia = ltrim(date("d"),'0');
+	$mes = $meses[ltrim(date("m"), '0')-1];
+	$anho = date("Y");
 
 	$pdf = new MyPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 	$pdf->SetCreator(PDF_CREATOR);
 	$pdf->SetAuthor('Mutual');
-	$pdf->SetTitle('Diploma');
+	$pdf->SetTitle('Certificado');
 	$pdf->SetSubject('PDF');
 	$pdf->SetKeywords('PDF');
 
-	$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+	//$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-	$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+	//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+	$pdf->SetMargins(0,0,0); // set the margins 
+	$pdf->SetHeaderMargin(0);
+	$pdf->SetFooterMargin(0);
+	$pdf->SetAutoPageBreak(TRUE, -10);
+	$pdf->setCellPaddings(0,0,0,0);
 
 	//$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 	//$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-	/*if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
-		require_once(dirname(__FILE__).'/lang/eng.php');
-		$pdf->setLanguageArray($l);
-	}*/
-
-	$pdf->setFontSubsetting(true);
-
-	$pdf->SetFont('courierB', '', 14, '', true);
+	//$pdf->setFontSubsetting(true);
+	//$pdf->SetFont('courierB', '', 14, '', true);
 
 	$pdf->AddPage('L');
+	//$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
 
-	$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+	//left top width heigth
+	//$pdf->Image(get_field("logo_header","option") ,0, 0, 100, 100, 'PNG', '', '', true, 300, '');
+	$pdf->Image(get_template_directory()."/assets/images/certificado/logo_mutual.png",123, 24, 50, 0, 'PNG', '', '', true, 300, '');
+	$pdf->Image(get_template_directory()."/assets/images/certificado/certificado_asistencia.png",77, 86, 150, 0, 'PNG', '', '', true, 300, '');
+	$pdf->Image(get_template_directory()."/assets/images/certificado/logo_mutual.png",27,159, 40, 0, 'PNG', '', '', true, 300, '');
+
 
 $html = <<<EOF
-<!-- EXAMPLE OF CSS STYLE -->
-<style>
-    h1 {
-        color: navy;
-        font-family: times;
-        font-size: 24pt;
-        text-decoration: underline;
-    }
-    p.first {
-        color: #003300;
-        font-family: helvetica;
-        font-size: 12pt;
-    }
-    p.first span {
-        color: #006600;
-        font-style: italic;
-    }
-    p#second {
-        color: rgb(00,63,127);
-        font-family: times;
-        font-size: 12pt;
-        text-align: justify;
-    }
-    p#second > span {
-        background-color: #FFFFAA;
-    }
-    table.first {
-        color: #003300;
-        font-family: helvetica;
-        font-size: 8pt;
-        border-left: 3px solid red;
-        border-right: 3px solid #FF00FF;
-        border-top: 3px solid green;
-        border-bottom: 3px solid blue;
-        background-color: #ccffcc;
-    }
-    td {
-        border: 2px solid blue;
-        background-color: #ffffee;
-    }
-    td.second {
-        border: 2px dashed green;
-    }
-    div.test {
-        color: #CC0000;
-        background-color: #FFFF66;
-        font-family: helvetica;
-        font-size: 10pt;
-        border-style: solid solid solid solid;
-        border-width: 2px 2px 2px 2px;
-        border-color: green #FF00FF blue red;
-        text-align: center;
-    }
-    .lowercase {
-        text-transform: lowercase;
-    }
-    .uppercase {
-        text-transform: uppercase;
-    }
-    .capitalize {
-        text-transform: capitalize;
-    }
-</style>
+<table class="uno" border="1" style="background-color:#F6F6F6;" >
+	<tr>
+		<td width="100%" >
+		  	<table border="0" >
+				<tr style="line-height: 33px;" >
+					<td width="100%" ></td>
+				</tr>
+				<tr>
+					<td width="3%" ></td>
+					<td width="93%" >
+						<table>
+							<tr style="line-height: 33px;" >
+								<td width="100%" style="background-color: #8FBE00;" ></td>
+							</tr>
+							<tr>
+								<td width="4.5%" style="background-color: #8FBE00;" ></td>
+								<td width="91%" >
+									<table border="0">
+										<tr style="line-height: 111px;" >
+											<td width="100%;" ></td>
+										</tr>
+										<tr style="line-height: 112px;" ><td width="100%;height:100px;" ></td></tr>
+										<tr style="line-height: 60px;" >											
+											<td width="100%;" style="text-align: center; font-size: 16px; font-family: Arial; color: #4f5050" >$nombre</td>
+										</tr>
+										<tr style="line-height: 20px;" >
+											<td width="100%;" style="text-align: center; font-size: 16px; font-family: Arial; color: #4f5050" >Asistió a $nombre_evento</td>
+										</tr>
+										<tr style="line-height: 20px;" >
+											<td width="100%;" style="text-align: center; font-size: 16px; font-family: Arial; color: #4f5050" >el $fecha_final</td>
+										</tr>
+										<tr style="line-height: 80px;" >
+											<td width="50%;" style="text-align: left; font-size: 16px; font-family: Arial; color: #4f5050" ></td>
+											<td width="50%;" style="text-align: right; font-size: 16px; font-family: Arial; color: #4f5050;" >
+												<table>
+													<tr style="line-height: 70px;" ><td></td></tr>
+													<tr style="line-height: 20px;" >
+														<td>
+															Santiago, $dia de $mes del 2017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td width="4.5%" style="background-color: #8FBE00;" ></td>
+							</tr>			
+							<tr style="line-height: 33px;" >
+								<td width="100%" style="background-color: #8FBE00;" ></td>
+							</tr>					
+						</table>
+					</td>
+					<td width="4%" ></td>
+				</tr>
+				<tr style="line-height: 33px;">
+					<td width="100%">
 
-<h1 class="title">Example of <i style="color:#990000">XHTML + CSS</i> para $email</h1>
-
-<p class="first">Example of paragraph with class selector. <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed imperdiet lectus. Phasellus quis velit velit, non condimentum quam. Sed neque urna, ultrices ac volutpat vel, laoreet vitae augue. Sed vel velit erat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras eget velit nulla, eu sagittis elit. Nunc ac arcu est, in lobortis tellus. Praesent condimentum rhoncus sodales. In hac habitasse platea dictumst. Proin porta eros pharetra enim tincidunt dignissim nec vel dolor. Cras sapien elit, ornare ac dignissim eu, ultricies ac eros. Maecenas augue magna, ultrices a congue in, mollis eu nulla. Nunc venenatis massa at est eleifend faucibus. Vivamus sed risus lectus, nec interdum nunc.</span></p>
-
-<p id="second">Example of paragraph with ID selector. <span>Fusce et felis vitae diam lobortis sollicitudin. Aenean tincidunt accumsan nisi, id vehicula quam laoreet elementum. Phasellus egestas interdum erat, et viverra ipsum ultricies ac. Praesent sagittis augue at augue volutpat eleifend. Cras nec orci neque. Mauris bibendum posuere blandit. Donec feugiat mollis dui sit amet pellentesque. Sed a enim justo. Donec tincidunt, nisl eget elementum aliquam, odio ipsum ultrices quam, eu porttitor ligula urna at lorem. Donec varius, eros et convallis laoreet, ligula tellus consequat felis, ut ornare metus tellus sodales velit. Duis sed diam ante. Ut rutrum malesuada massa, vitae consectetur ipsum rhoncus sed. Suspendisse potenti. Pellentesque a congue massa.</span></p>
-
-<div class="test">example of DIV with border and fill.
-<br />Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-<br /><span class="lowercase">text-transform <b>LOWERCASE</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-<br /><span class="uppercase">text-transform <b>uppercase</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-<br /><span class="capitalize">text-transform <b>cAPITALIZE</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-</div>
-
-<br />
-
-<table class="first" cellpadding="4" cellspacing="6">
- <tr>
-  <td width="30" align="center"><b>No.</b></td>
-  <td width="140" align="center" bgcolor="#FFFF00"><b>XXXX</b></td>
-  <td width="140" align="center"><b>XXXX</b></td>
-  <td width="80" align="center"> <b>XXXX</b></td>
-  <td width="80" align="center"><b>XXXX</b></td>
-  <td width="45" align="center"><b>XXXX</b></td>
- </tr>
- <tr>
-  <td width="30" align="center">1.</td>
-  <td width="140" rowspan="6" class="second">XXXX<br />XXXX<br />XXXX<br />XXXX<br />XXXX<br />XXXX<br />XXXX<br />XXXX</td>
-  <td width="140">XXXX<br />XXXX</td>
-  <td width="80">XXXX<br />XXXX</td>
-  <td width="80">XXXX</td>
-  <td align="center" width="45">XXXX<br />XXXX</td>
- </tr>
- <tr>
-  <td width="30" align="center" rowspan="3">2.</td>
-  <td width="140" rowspan="3">XXXX<br />XXXX</td>
-  <td width="80">XXXX<br />XXXX</td>
-  <td width="80">XXXX<br />XXXX</td>
-  <td align="center" width="45">XXXX<br />XXXX</td>
- </tr>
-</table>
+					</td>
+				</tr>
+		  	</table>
+	  	</td>
+  	</tr>
+</table>	
 EOF;
 
 	$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
@@ -469,12 +419,11 @@ EOF;
 	$rand = rand(1,9887657139864654);
 	$pdf_name = $rand+$time;	
 
+	//$pdf->Output($pdf_name.".pdf", 'I');	
 	$pdf->Output($pdf_name.".pdf", 'D');	
 
-	return "ok";
-
 	}else{
-		echo "Imposible imprimir su certificado.";
+		//echo "Imposible imprimir su certificado.";
 	}
 
 	die;

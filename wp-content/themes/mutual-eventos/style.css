@@ -24,3 +24,11 @@ Use it to make something cool, have fun, and share what you've learned with othe
 .slick-slide img {
 	width: 90%;
 }
+
+.titulo-descarga-superior {
+	text-align: center !important;
+}
+
+ul.preguntas-calificacion {
+	width: auto !important;
+}

@@ -24,116 +24,221 @@ get_header(); ?>
 
 		if( $res==0 ) {
 	?>
-		<form class="dissapear" id="form-encuesta" method="post">
 
-			<input name="email" type="hidden" value="<?php echo $email; ?>">
-			<input name="action" type="hidden" value="guardarEncuesta" >
-			<input name="evento" type="hidden" value="<?php echo $evento;?>" >
-
-			<div class="questions">
-				
-				<div class="question">
-					<p>1. ¿Pregunta 1? *</p>
-					<ul>
-						<li>
-							<label>1</label>
-							<input type="radio" value="1" name="respuesta_1">
-						</li>
-						<li>
-							<label>2</label>
-							<input type="radio" value="2" name="respuesta_1">
-						</li>
-						<li>
-							<label>3</label>
-							<input type="radio" value="3" name="respuesta_1">
-						</li>
-						<li>
-							<label>4</label>
-							<input type="radio" value="4" name="respuesta_1">
-						</li>
-					</ul>
+<section>
+		<div class="container">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-12">
+						<img src="<?php echo get_field("banner_principal","option"); ?>"/>
+					</div>
 				</div>
-				
-				<div class="question">
-					<p>2. ¿Pregunta 2? *</p>
-					<ul>
-						<li>
-							<label>Sí</label>
-							<input type="radio" value="si" name="respuesta_2">
-						</li>
-						<li>
-							<label>No</label>
-							<input type="radio" value="no" name="respuesta_2">
-						</li>
-					</ul>
-				</div>
-
-				<div class="question">
-					<p>3. ¿Pregunta 3? *</p>
-					<ul>
-						<li>
-							<label>1</label>
-							<input type="radio" value="1" name="respuesta_3">
-						</li>
-						<li>
-							<label>2</label>
-							<input type="radio" value="2" name="respuesta_3">
-						</li>
-						<li>
-							<label>3</label>
-							<input type="radio" value="3" name="respuesta_3">
-						</li>
-						<li>
-							<label>4</label>
-							<input type="radio" value="4" name="respuesta_3">
-						</li>
-					</ul>
-				</div>
-
-				<div class="question">
-					<p>4. ¿Pregunta 4? *</p>
-					<ul>
-						<li>
-							<label>1</label>
-							<input type="radio" value="1" name="respuesta_4">
-						</li>
-						<li>
-							<label>2</label>
-							<input type="radio" value="2" name="respuesta_4">
-						</li>
-						<li>
-							<label>3</label>
-							<input type="radio" value="3" name="respuesta_4">
-						</li>
-						<li>
-							<label>4</label>
-							<input type="radio" value="4" name="respuesta_4">
-						</li>
-					</ul>
-				</div>			
+				<div class="row">
+					<div class="col-md-12">
+						<h3 class="titulo-encuesta">Te invitamos a responder de 1 a 7, donde 7 se asocia a la mejor calificación, las siguientes preguntas:</h3>
+						<span class="encuesta">Las preguntas marcadas con * son obligatorias</span>
+						<form class="dissapear" id="form-encuesta" method="post">
+						<div class="preguntas">
+							<p>1. ¿pregunta 1? *</p>
+							<ul class="preguntas-calificacion">
+								<li>
+									<label>1</label>
+									<input type="radio" value="1" name="respuesta_1">
+								</li>
+								<li>
+									<label>2</label>
+									<input type="radio" value="2" name="respuesta_1">
+								</li>
+								<li>
+									<label>3</label>
+									<input type="radio" value="3" name="respuesta_1">
+								</li>
+								<li>
+									<label>4</label>
+									<input type="radio" value="4" name="respuesta_1">
+								</li>
+								<li>
+									<label>5</label>
+									<input type="radio" value="5" name="respuesta_1">
+								</li>			
+								<li>
+									<label>6</label>
+									<input type="radio" value="6" name="respuesta_1">
+								</li>
+								<li>
+									<label>7</label>
+									<input type="radio" value="7" name="respuesta_1">
+								</li>																					
+							</ul>			
+							<p>2. ¿pregunta 2? *</p>
+							<ul class="preguntas-calificacion">
+								<li>
+									<label>1</label>
+									<input type="radio" value="1" name="respuesta_2">
+								</li>
+								<li>
+									<label>2</label>
+									<input type="radio" value="2" name="respuesta_2">
+								</li>
+								<li>
+									<label>3</label>
+									<input type="radio" value="3" name="respuesta_2">
+								</li>
+								<li>
+									<label>4</label>
+									<input type="radio" value="4" name="respuesta_2">
+								</li>
+								<li>
+									<label>5</label>
+									<input type="radio" value="5" name="respuesta_2">
+								</li>			
+								<li>
+									<label>6</label>
+									<input type="radio" value="6" name="respuesta_2">
+								</li>
+								<li>
+									<label>7</label>
+									<input type="radio" value="7" name="respuesta_2">
+								</li>																					
+							</ul>													
+							<p>3. ¿Pregunta 3? *</p>
+							<ul class="preguntas-calificacion">
+								<li>
+									<label>1</label>
+									<input type="radio" value="1" name="respuesta_3">
+								</li>
+								<li>
+									<label>2</label>
+									<input type="radio" value="2" name="respuesta_3">
+								</li>
+								<li>
+									<label>3</label>
+									<input type="radio" value="3" name="respuesta_3">
+								</li>
+								<li>
+									<label>4</label>
+									<input type="radio" value="4" name="respuesta_3">
+								</li>
+								<li>
+									<label>5</label>
+									<input type="radio" value="5" name="respuesta_3">
+								</li>
+								<li>
+									<label>6</label>
+									<input type="radio" value="6" name="respuesta_3">
+								</li>
+								<li>
+									<label>7</label>
+									<input type="radio" value="7" name="respuesta_3">
+								</li>								
+							</ul>
+							<p>4. ¿Pregunta 4? *</p>
+							<ul class="preguntas-calificacion">
+								<li>
+									<label>1</label>
+									<input type="radio" value="1" name="respuesta_4">
+								</li>
+								<li>
+									<label>2</label>
+									<input type="radio" value="2" name="respuesta_4">
+								</li>
+								<li>
+									<label>3</label>
+									<input type="radio" value="3" name="respuesta_4">
+								</li>
+								<li>
+									<label>4</label>
+									<input type="radio" value="4" name="respuesta_4">
+								</li>
+								<li>
+									<label>5</label>
+									<input type="radio" value="5" name="respuesta_4">
+								</li>
+								<li>
+									<label>6</label>
+									<input type="radio" value="6" name="respuesta_4">
+								</li>
+								<li>
+									<label>7</label>
+									<input type="radio" value="7" name="respuesta_4">
+								</li>								
+							</ul>							
+							<p>4. ¿Comentarios y sugerencias? Por favor escribe a continuación: *</p>
+							<textarea rows="4" name="comentario" placeholder="Escribir un comentario..."></textarea>
+							<button id="send-button" class="btn-enviar">ENVIAR</button>
 							
-			</div><!-- .questions -->
+						</div>
+						<input name="email" type="hidden" value="<?php echo $email; ?>">
+						<input name="action" type="hidden" value="guardarEncuesta" >
+						<input name="evento" type="hidden" value="<?php echo $evento;?>" >
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-			<p>¿Comentarios y sugerencias? Por favor escribe a continuación:</p>
-
-			<textarea rows="6" name="comentario" placeholder="Escribir un comentario..."></textarea>
-
-			<input id="send-button" type="button" value="ENVIAR RESPUESTA" >
-
-		</form>	
 	<?php		
 		}else if($res==2){
 	?>
-		<div>No tienes permitido responder esta encuesta</div>
+
+	<section>
+		<div class="container">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-12">
+						<img src="<?php echo get_field("banner_principal","option"); ?>"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h3 class="titulo-encuesta">No tienes permitido responder esta encuesta</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<?php
 		}else{
 	?>
-		<div>Encuesta ya respondinda</div>
+	<section>
+		<div class="container">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-12">
+						<img src="<?php echo get_field("banner_principal","option"); ?>"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h3 class="titulo-encuesta">Encuesta ya respondinda</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>		
 	<?php
 		}
 		}else{
 	?>
-		<div>Encuesta no disponible</div>
+	<section>
+		<div class="container">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-12">
+						<img src="<?php echo get_field("banner_principal","option"); ?>"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h3 class="titulo-encuesta">Encuesta no disponible</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>		
+
 	<?php
 		}
 	?>	

@@ -36,7 +36,7 @@ if($posts) {
 	foreach($posts as $post) {
 		$nombre_evento = $post->post_title."<br>";
 	}
-}	
+}
 
 ?>
 <section>

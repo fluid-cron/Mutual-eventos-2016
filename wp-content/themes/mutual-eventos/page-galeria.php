@@ -26,25 +26,25 @@ get_header(); ?>
 			'post_type' => 'eventos'
 		));
 		
-		if($posts) {
-			foreach($posts as $post) {
-				$images = get_field('galeria');
+			if($posts) {
+				foreach($posts as $post) {
+					$images = get_field('galeria');
 
-				$nombre_evento = $post->post_title;
-				$descripcion   = $post->post_content;
-				/*
-				echo $post->post_excerpt."<br>";
-				echo get_field('fecha')."<br>";
-				echo get_field('lugar')."<br>";
-				echo get_field('imagen')."<br>";				
-				echo get_permalink($post->ID)."<br>";
-				echo '<a href="'.get_permalink($post->ID).'">'.$post->post_title.'</a>';
-				*/
+					$nombre_evento = $post->post_title;
+					$descripcion   = $post->post_content;
+					/*
+					echo $post->post_excerpt."<br>";
+					echo get_field('fecha')."<br>";
+					echo get_field('lugar')."<br>";
+					echo get_field('imagen')."<br>";				
+					echo get_permalink($post->ID)."<br>";
+					echo '<a href="'.get_permalink($post->ID).'">'.$post->post_title.'</a>';
+					*/
 
+				}
+			}else{
+				$estado = 0;
 			}
-		}else{
-			$estado = 0;
-		}
 
 		}else{
 			//echo "No tiene permitido acceder a esta url";
