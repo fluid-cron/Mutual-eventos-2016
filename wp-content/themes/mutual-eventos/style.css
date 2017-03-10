@@ -18,7 +18,7 @@ Use it to make something cool, have fun, and share what you've learned with othe
 .alert-warning {
 	font-weight: bold;
     color: #505050 !important;
-    height: 60px !important;
+    /*height: 60px !important;*/
 }
 
 .slick-slide img {
@@ -31,4 +31,8 @@ Use it to make something cool, have fun, and share what you've learned with othe
 
 ul.preguntas-calificacion {
 	width: auto !important;
+}
+
+.alert-danger {
+	font-weight: bold;
 }

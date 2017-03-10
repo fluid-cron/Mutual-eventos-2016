@@ -79,7 +79,10 @@ if($posts) {
 				</div>			
 				<div class="alert alert-warning alert-dismissible" style="display: none;" id="gracias-no-mutual" role="alert">
 					<p>Intente nuevamente más tarde.</p>
-				</div>										
+				</div>
+				<div class="alert alert-danger alert-dismissible fade in" role="alert">
+					<p>error</p>
+				</div>
 			</div>
 		</div>
 
