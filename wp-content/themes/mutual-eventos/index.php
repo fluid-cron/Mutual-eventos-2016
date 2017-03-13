@@ -74,14 +74,8 @@ if($posts) {
 				<div class="alert alert-warning alert-dismissible" <?php if( $estado==1 ) { echo 'style="display: block;"'; }else{ echo 'style="display: none;"'; } ?> id="gracias-ya-inscrito" role="alert">					
 					<p>Ya ha sido enviada tu solicitud al evento.</p>
 				</div>		
-				<div class="alert alert-warning alert-dismissible" <?php if( $estado==3 ) { echo 'style="display: block;"'; }else{ echo 'style="display: none;"'; } ?> id="gracias-no-mutual" role="alert">
+				<div class="alert alert-danger alert-dismissible" <?php if( $estado==3 ) { echo 'style="display: block;"'; }else{ echo 'style="display: none;"'; } ?> id="gracias-no-mutual" role="alert">
 					<p>No puedes solicitar acceso a este evento.</p>
-				</div>			
-				<div class="alert alert-warning alert-dismissible" style="display: none;" id="gracias-no-mutual" role="alert">
-					<p>Intente nuevamente más tarde.</p>
-				</div>
-				<div class="alert alert-danger alert-dismissible fade in" role="alert">
-					<p>error</p>
 				</div>
 			</div>
 		</div>

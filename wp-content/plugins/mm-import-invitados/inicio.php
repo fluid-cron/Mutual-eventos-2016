@@ -27,48 +27,39 @@ if( $query->have_posts() ) {
 
 ?>
 <div class="wrap wpjb">
-    
-    <h1>
-        Import 
-    </h1>
-    
-    <form method="post" enctype="multipart/form-data">
 
-        <div id="container" style="position: relative;">
+    <h1> XLS Import <input type="button" onclick="location.href='<?php echo get_template_directory_uri()."/usuarios_mutual_ejemplo.xlsx";?>'" class="button-primary" value="DESCARGAR EJEMPLO EXCEL A IMPORTAR" style="width:300px !important;" ></h1> 
 
-            <br>
+    <div id="container" style="position: relative;">        
 
-            <select name="data" id="wpjb-data-import">
-                <option value="">Seleccionar evento</option>
-    			<?php  
-    			foreach ($tipos as $key) {
-    				echo '<option value="'.$key["slug"].'">'.$key["titulo"].'</option>';
-    			}
-    			?>
-            </select>
+        <p>Sección en la que importamos la nueva base de invitados a un evento mutual especifico, antes de importar favor de exportar la actual</p>
 
-            <br><br>
+        <br>
+        <select name="data" id="evento">
+            <option value="">Seleccionar evento</option>
+			<?php  
+			foreach ($tipos as $key) {
+				echo '<option value="'.$key["slug"].'">'.$key["titulo"].'</option>';
+			}
+			?>
+        </select>
+        <br><br>
+        <a href="#" id="pickfiles" class="button" style="position: relative; z-index: 1;display: none;">
+            <span class="wpjb-upload-empty" onclick="uploadFile();" >Select File</span>
+        </a>
+        <div id="importlist" style="margin: 15px 0 15px 0; font-size:12px"></div>
+        <input id="uploadfiles" style="display: none;" type="button" value="Upload e importar datos" class="button-primary" name="Submit">    
 
-            <a href="#" id="pickfiles" class="button" style="position: relative; z-index: 1;">
-                <span class="wpjb-upload-empty" onclick="uploadFile();" >Select File</span>
-            </a>
+    </div>    
 
-            <div id="filelist" style="margin: 15px 0 15px 0; font-size:12px">
-    	        <div>
-    	        	
-    	        </div>
-            </div>
-
-            <input id="uploadfiles" style="display: none;" type="button" value="Upload e importar datos" class="button-primary" name="Submit">    
-
-        </div>
-
-    </form>
-
-    <form style="display: none;" id="form" action="upload_file" method="POST" enctype="multipart/form-data" target="iframe" >
+    <form style="display: none;" id="form_upload" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post" enctype="multipart/form-data" target="myiframe" >
+        
+        <input type="hidden" name="action" value="upload_invitacion_xls" >
+        <input type="hidden" name="evento" id="hidden_evento" value="" >
         <input type="file" name="archivo" id="archivo" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+
     </form>
-    <iframe style="display: none;" name="iframe" frameborder="0" ></iframe>        
+    <iframe style="display: none;" name="myiframe" id="myiframe" frameborder="0" ></iframe>
 
 </div>
 

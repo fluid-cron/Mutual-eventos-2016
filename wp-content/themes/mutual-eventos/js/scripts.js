@@ -45,7 +45,8 @@ jQuery(document).ready(function(jQuery) {
         rules : {
           'respuesta_1' : { required:true },
           'respuesta_2' : { required:true },
-          'respuesta_3' : { required:true }
+          'respuesta_3' : { required:true },
+          'respuesta_4' : { required:true }
         },     
         errorPlacement: function(error,element) {
           element.addClass('error');
@@ -57,12 +58,16 @@ jQuery(document).ready(function(jQuery) {
 
             jQuery.post(ajax.url,jQuery("#form-encuesta").serialize(),function(data) {
                 if( data==0 ) {
-                    alert("error al guardar la encuesta");
+                    //alert("error al guardar la encuesta");
+                    //jQuery("#gracias-encuesta").show();
                 }else if( data==1 ) {
-                    alert("Encuesta guardada con exito");
-                }else if( data==2 ) {
-                    alert("La encuesta ya fue respondida");
-                }
+                    //alert("Encuesta guardada con exito");
+                    jQuery("#gracias-encuesta").show();
+                    jQuery("#encuesta-content").hide();
+                }/*else if( data==2 ) {
+                    //alert("La encuesta ya fue respondida");
+                    jQuery("#ya-respondida-encuesta").show();
+                }*/                
             }); 
 
         }

@@ -4,6 +4,16 @@ jQuery(document).ready(function($) {
       jQuery("#uploadfiles").fadeIn();
    });
 
+   jQuery("#uploadfiles").click(function() {
+      var evento_selected = jQuery("#evento").val();
+      jQuery("#hidden_evento").val(evento_selected);
+      jQuery("#form_upload").submit();
+   });
+
+   jQuery("#evento").change(function(){
+      jQuery("#pickfiles").show();
+   });
+
 });	
 
 function getConfirmation() {
@@ -18,9 +28,10 @@ function getConfirmation() {
 }
 
 function uploadFile() {
-   jQuery('#archivo').trigger('click');
-}
-
-function upload_invitacion() {
-   jQuery("#form").submit();
+   var evento = jQuery("#evento").val();
+   if( evento!="" ) {
+      jQuery('#archivo').trigger('click');
+   }else{
+      jQuery("#importlist").text("Debe seleccionar un evento");
+   }
 }

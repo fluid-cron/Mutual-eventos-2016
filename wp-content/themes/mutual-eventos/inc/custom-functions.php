@@ -63,10 +63,14 @@ function guardarInscripcion() {
 							'%s'
 						)
 					);			
+
+					$url = get_template_directory_uri().'/mail/';
 										
 					$body    = file_get_contents(get_template_directory_uri().'/mail/index.html');
 					$body    = str_replace("[EVENTO]",$evento_nombre,$body);
-					$body    = str_replace("[QR]",get_template_directory_uri()."/temp/".$qr,$body);
+					$body    = str_replace("[NOMBRE]",$result->nombre,$body);
+					$body    = str_replace("[URL]",$url,$body);
+					$body    = str_replace("[QR]",get_template_directory_uri()."/temp/qr/".$qr,$body);
 					$headers = array('Content-Type: text/html; charset=UTF-8');
 					wp_mail($email,'Inscripción al evento '.$evento_nombre, $body ,$headers);					
 

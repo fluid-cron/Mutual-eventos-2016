@@ -33,7 +33,7 @@ get_header(); ?>
 						<img src="<?php echo get_field("banner_principal","option"); ?>"/>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" id="encuesta-content" >
 					<div class="col-md-12">
 						<h3 class="titulo-encuesta">Te invitamos a responder de 1 a 7, donde 7 se asocia a la mejor calificación, las siguientes preguntas:</h3>
 						<span class="encuesta">Las preguntas marcadas con * son obligatorias</span>
@@ -172,8 +172,20 @@ get_header(); ?>
 						<input name="action" type="hidden" value="guardarEncuesta" >
 						<input name="evento" type="hidden" value="<?php echo $evento;?>" >
 						</form>
-					</div>
+					</div>					
 				</div>
+
+				<div class="row" id="gracias-encuesta" style="display: none;" >
+					<div class="col-md-12">
+						<h3 class="titulo-encuesta">Encuesta enviada con éxito</h3>
+					</div>
+				</div>					
+				<div class="row" id="ya-respondida-encuesta" style="display: none;">
+					<div class="col-md-12">
+						<h3 class="titulo-encuesta">Encuesta ya respondida</h3>
+					</div>
+				</div>				
+
 			</div>
 		</div>
 	</section>
