@@ -87,8 +87,8 @@ function upload_invitacion_xls() {
 add_action( 'admin_post_nopriv_upload_invitacion_xls', 'upload_invitacion_xls' );
 add_action( 'admin_post_upload_invitacion_xls', 'upload_invitacion_xls' );
 
-add_action( 'wp_ajax_descargar_ejemplo_xls_invitados', 'descargar_ejemplo_xls_invitados' );
-/*
+/*add_action( 'wp_ajax_descargar_ejemplo_xls_invitados', 'descargar_ejemplo_xls_invitados' );
+
 function export_invitador_mutual() {
 
 	require_once dirname(__FILE__) . '/libraries/PHPExcel-1.8/Classes/PHPExcel.php';

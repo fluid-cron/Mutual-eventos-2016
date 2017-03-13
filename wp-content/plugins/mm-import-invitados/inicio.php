@@ -32,7 +32,7 @@ if( $query->have_posts() ) {
 
     <div id="container" style="position: relative;">        
 
-        <p>Sección en la que importamos la nueva base de invitados a un evento mutual especifico, antes de importar favor de exportar la actual</p>
+        <p>Sección en la que importamos la nueva base de invitados a un evento mutual especifico, antes de importar favor de exportar la actual como ejemplo</p>
 
         <br>
         <select name="data" id="evento">

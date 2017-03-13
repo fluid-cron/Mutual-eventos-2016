@@ -8,7 +8,7 @@
 */
 function register_encuesta_satisfaccion()
 {
-	add_menu_page( 'Encuestas de satisfacción', 'Encuestas de satisfacción', 'manage_options', 'mm-encuesta/inicio.php', '', 'dashicons-media-text', 27 );
+	add_menu_page( 'Encuestas de satisfacción', 'Encuestas de satisfacción', 'manage_options', 'mm-encuesta/inicio.php', '', 'dashicons-media-text', 26 );
 }
 add_action( 'admin_menu', 'register_encuesta_satisfaccion' );
 
