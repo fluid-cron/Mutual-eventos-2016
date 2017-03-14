@@ -64,17 +64,17 @@ function guardarInscripcion() {
 						)
 					);
 
+					$args = array(
+						'post_type'	=> 'eventos',
+						'name'		=> $evento_activo
+					);
+					$the_query = new WP_Query( $args );
 
-					$posts = get_posts(array(
-						'name'      => $evento_activo,
-						'post_type' => 'eventos'
-					));
-
-					if($posts) {
-						foreach($posts as $post) {
-							$banner = get_field("imagen");
-						}
-					}					
+					if( $the_query->have_posts() ):
+						while( $the_query->have_posts() ) : $the_query->the_post();
+							$banner = get_field("header_email");
+						endwhile;
+					endif;								
 
 					$url = get_template_directory_uri().'/mail/';
 										

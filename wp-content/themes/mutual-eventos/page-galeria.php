@@ -21,10 +21,10 @@ get_header(); ?>
 		$estado=1;
 		if( $email!="" && $evento!="" ) {
 
-		$posts = get_posts(array(
-			'name'      => $evento,
-			'post_type' => 'eventos'
-		));
+			$posts = get_posts(array(
+				'name'      => $evento,
+				'post_type' => 'eventos'
+			));
 		
 			if($posts) {
 				foreach($posts as $post) {
@@ -45,6 +45,8 @@ get_header(); ?>
 			}else{
 				$estado = 0;
 			}
+
+			$encuesta    = esc_url(get_permalink(get_page_by_title('encuesta')))."?email=".$email."&evento=".$evento;
 
 		}else{
 			//echo "No tiene permitido acceder a esta url";
@@ -79,6 +81,11 @@ get_header(); ?>
 						<?php endif; ?>
 					</div>
 				</div>
+
+						<div class="botones">
+							<a href="javascript:void(0);" class="btn-ver-encuesta" onclick="location.href='<?php echo $encuesta;?>'" >RESPONDER ENCUESTA</a>
+						</div>	
+
 			</div>
 		</div>
 	</section>	

@@ -22,8 +22,6 @@ get_header(); ?>
 
 		$res = respondioEncuesta($email,$evento);
 
-		if( $res==0 ) {
-
 			$posts = get_posts(array(
 				'name'      => $evento,
 				'post_type' => 'eventos'
@@ -35,6 +33,10 @@ get_header(); ?>
 					$banner = get_field("imagen");
 				}
 			}
+
+			$galeria = esc_url(get_permalink(get_page_by_title('galeria')))."?email=".$email."&evento=".$evento;
+
+		if( $res==0 ) {
 
 	?>
 
@@ -131,11 +133,17 @@ get_header(); ?>
 				<div class="row" id="gracias-encuesta" style="display: none;" >
 					<div class="col-md-12">
 						<h3 class="titulo-encuesta">Encuesta enviada con éxito</h3>
+						<div class="botones">
+							<a href="javascript:void(0);" class="btn-ver-galeria" onclick="location.href='<?php echo $galeria;?>'" >VER GALERÍA DEL EVENTO</a>
+						</div>							
 					</div>
 				</div>					
 				<div class="row" id="ya-respondida-encuesta" style="display: none;">
 					<div class="col-md-12">
 						<h3 class="titulo-encuesta">Encuesta ya respondida</h3>
+						<div class="botones">
+							<a href="javascript:void(0);" class="btn-ver-galeria" onclick="location.href='<?php echo $galeria;?>'" >VER GALERÍA DEL EVENTO</a>
+						</div>							
 					</div>
 				</div>				
 
@@ -152,7 +160,7 @@ get_header(); ?>
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-12">
-						<img src="<?php echo get_field("banner_principal","option"); ?>"/>
+						<img src="<?php echo $banner; ?>"/>
 					</div>
 				</div>
 				<div class="row">
@@ -172,12 +180,15 @@ get_header(); ?>
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-12">
-						<img src="<?php echo get_field("banner_principal","option"); ?>"/>
+						<img src="<?php echo $banner; ?>"/>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<h3 class="titulo-encuesta">Encuesta ya respondinda</h3>
+						<div class="botones">
+							<a href="javascript:void(0);" class="btn-ver-galeria" onclick="location.href='<?php echo $galeria;?>'" >VER GALERÍA DEL EVENTO</a>
+						</div>						
 					</div>
 				</div>
 			</div>
@@ -192,7 +203,7 @@ get_header(); ?>
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-12">
-						<img src="<?php echo get_field("banner_principal","option"); ?>"/>
+						<img src="<?php echo $banner; ?>"/>
 					</div>
 				</div>
 				<div class="row">

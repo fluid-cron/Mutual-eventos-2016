@@ -119,7 +119,7 @@ get_header(); ?>
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-12">
-							<img src="<?php echo get_field("banner_principal","option"); ?>"/>
+							<img src="<?php echo $banner; ?>"/>
 						</div>
 					</div>
 					<div class="row">

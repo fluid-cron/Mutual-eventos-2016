@@ -36,11 +36,11 @@ if( function_exists('acf_add_options_page') && function_exists('acf_add_options_
         'redirect'      => false
     ));
 
-    acf_add_options_sub_page(array(
+    /*acf_add_options_sub_page(array(
         'page_title'  => 'Home',
         'menu_slug'   => 'configuracion-theme-home',
         'parent_slug' => $option_page_configuracion_theme['menu_slug']                
-    ));      
+    ));      */
 
     acf_add_options_sub_page(array(
         'page_title'  => 'Header',
