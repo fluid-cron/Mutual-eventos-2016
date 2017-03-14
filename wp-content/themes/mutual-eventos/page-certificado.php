@@ -36,7 +36,7 @@ get_header(); ?>
 					foreach($posts as $post) {
 						$documentos = get_field('contenedor_archivos');
 						$nombre_evento = $post->post_title;
-
+						$banner = get_field("imagen");
 					}
 				}		
 
@@ -57,7 +57,7 @@ get_header(); ?>
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-12">
-						<img src="<?php echo get_field("banner_principal","option"); ?>"/>
+						<img src="<?php echo $banner; ?>"/>
 					</div>
 				</div>
 				<div class="row">
@@ -71,6 +71,7 @@ get_header(); ?>
 				<div class="row">
 					<div class="col-md-1 col-sm-1 hidden-xs">&nbsp;</div>
 					<div class="col-md-10 col-sm-10 col-xs-12">
+						<?php if ( $documentos!="" ) { ?>
 						<h3 class="titulo-descarga-documentos">DESCARGAR DOCUMENTOS DEL EVENTO</h3>
 						<table>
 							<tbody>
@@ -97,6 +98,7 @@ get_header(); ?>
 								?>								
 							</tbody>
 						</table>
+						<?php } ?>
 						<div class="botones">
 							<a href="javascript:void(0);" class="btn-ver-encuesta" onclick="location.href='<?php echo $encuesta;?>'" >RESPONDER ENCUESTA</a>
 							<a href="javascript:void(0);" class="btn-ver-galeria" onclick="location.href='<?php echo $galeria;?>'" >VER GALERÍA DEL EVENTO</a>

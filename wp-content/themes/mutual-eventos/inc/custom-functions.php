@@ -62,7 +62,19 @@ function guardarInscripcion() {
 							'%s',
 							'%s'
 						)
-					);			
+					);
+
+
+					$posts = get_posts(array(
+						'name'      => $evento_activo,
+						'post_type' => 'eventos'
+					));
+
+					if($posts) {
+						foreach($posts as $post) {
+							$banner = get_field("imagen");
+						}
+					}					
 
 					$url = get_template_directory_uri().'/mail/';
 										
@@ -70,6 +82,7 @@ function guardarInscripcion() {
 					$body    = str_replace("[EVENTO]",$evento_nombre,$body);
 					$body    = str_replace("[NOMBRE]",$result->nombre,$body);
 					$body    = str_replace("[URL]",$url,$body);
+					$body    = str_replace("[BANNER]",$banner,$body);
 					$body    = str_replace("[QR]",get_template_directory_uri()."/temp/qr/".$qr,$body);
 					$headers = array('Content-Type: text/html; charset=UTF-8');
 					wp_mail($email,'Inscripción al evento '.$evento_nombre, $body ,$headers);					

@@ -34,7 +34,8 @@ $posts = get_posts(array(
 
 if($posts) {
 	foreach($posts as $post) {
-		$nombre_evento = $post->post_title."<br>";
+		$nombre_evento = $post->post_title;
+		$banner = get_field("imagen");
 	}
 }
 
@@ -44,7 +45,7 @@ if($posts) {
 			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-12">
-						<img src="<?php echo get_field("banner_principal","option"); ?>"/>
+						<img src="<?php echo $banner; ?>"/>
 					</div>
 				</div>
 				<?php if( $estado==2 ){ ?>
