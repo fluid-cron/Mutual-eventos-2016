@@ -54,10 +54,13 @@ function upload_asistencia_xls() {
 		$n = 0;
 		foreach ($contenido_xls as $key) {
 
+            $email = preg_replace('/\s+/', '', $key["email"]);
+            $email = str_replace('&nbsp;',"",$email);
+
 			$wpdb->insert(
 				$wpdb->prefix.'usuarios_mutual_asistencia',
 				array(
-					'email'    => $key["email"],
+					'email'    => $email,
 					'evento'   => $evento
 				),
 				array(

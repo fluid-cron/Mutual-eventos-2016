@@ -54,13 +54,16 @@ function upload_invitacion_xls() {
 		$n = 0;
 		foreach ($contenido_xls as $key) {
 
+			$email = preg_replace('/\s+/', '', $key["email"]);
+			$email = str_replace('&nbsp;',"",$email);
+
 			$wpdb->insert(
 				$wpdb->prefix.'usuarios_mutual',
 				array(
 					'nombre'   => $key["nombre"],
 					'cargo'    => $key["cargo"],
 					'empresa'  => $key["empresa"],
-					'email'    => $key["email"],
+					'email'    => $email,
 					'telefono' => $key["telefono"],
 					'evento'   => $evento
 				),

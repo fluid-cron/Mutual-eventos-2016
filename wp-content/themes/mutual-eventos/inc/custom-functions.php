@@ -77,7 +77,7 @@ function guardarInscripcion() {
 					endif;								
 
 					$url = get_template_directory_uri().'/mail/';
-										
+
 					$body    = file_get_contents(get_template_directory_uri().'/mail/index.html');
 					$body    = str_replace("[EVENTO]",$evento_nombre,$body);
 					$body    = str_replace("[NOMBRE]",$result->nombre,$body);
@@ -85,7 +85,36 @@ function guardarInscripcion() {
 					$body    = str_replace("[BANNER]",$banner,$body);
 					$body    = str_replace("[QR]",get_template_directory_uri()."/temp/qr/".$qr,$body);
 					$headers = array('Content-Type: text/html; charset=UTF-8');
-					wp_mail($email,'Inscripción al evento '.$evento_nombre, $body ,$headers);					
+
+					$mailResult = false;
+					$mailResult = wp_mail($email,'Inscripción al evento '.$evento_nombre, $body ,$headers);					
+
+					if( $mailResult ) {
+						$mailResult = "ok";
+					}else{
+						$mailResult = "error";
+					}
+
+					$wpdb->insert(
+						$wpdb->prefix.'log_mail',
+						array(
+							'nombre'      => $result->nombre,
+							'evento'      => $evento_nombre,
+							'evento_slug' => $evento_activo,
+							'email'       => $email,
+							'banner'      => $banner,
+							'estado'      => $mailResult,
+							'qr'          => get_template_directory_uri()."/temp/qr/".$qr						),
+						array(
+							'%s',
+							'%s',
+							'%s',
+							'%s',
+							'%s',
+							'%s',
+							'%s'
+						)
+					);					
 
 					echo 1;
 				}else{
