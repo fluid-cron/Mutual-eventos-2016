@@ -2,14 +2,13 @@
 <?php
 
 	$participacion_activa = get_field("desactivar_participacion","option");
-	global $evento_activo;
 
 	if( $participacion_activa==1 ) {
 		//echo "Participar en los eventos se encuentra temporalmente desactivado";
 		$estado = 2;
 	}else{
 
-		$email = sanitize_text_field(@$_GET["email"]);
+		$email  = sanitize_text_field(@$_GET["email"]);
 		$evento = sanitize_text_field(@$_GET["evento"]);
 		$estado = -1;
 
@@ -28,27 +27,37 @@
 	}	
 
 $posts = get_posts(array(
-	'name'      => $evento_activo,
+	'name'      => $evento,
 	'post_type' => 'eventos'
 ));
 
+$evento_activo = 1;	
+$status = 0;
 if($posts) {
 	foreach($posts as $post) {
 		$nombre_evento = $post->post_title;
 		$banner = get_field("imagen");
+
+		$desactivar_evento = get_field('desactivar_evento');
+		if( $desactivar_evento==1 ) {
+			//echo "true" inactivo;
+			$evento_activo = 0;
+		}	
 	}
+	$status = 1;
 }
 
 ?>
 <section>
 		<div class="container">
 			<div class="col-md-12">
+				<?php if($status==1){ ?>
 				<div class="row">
 					<div class="col-md-12">
 						<img src="<?php echo $banner; ?>"/>
 					</div>
 				</div>
-				<?php if( $estado==2 ){ ?>
+				<?php if( $estado==2 || $evento_activo==0 ){ ?>
 				<div class="row">
 					<div class="col-md-12">
 						<h3 class="titulo"><?php echo strtoupper($nombre_evento); ?></h3>
@@ -68,6 +77,20 @@ if($posts) {
 					</div>
 				</div>	
 				<?php } ?>
+				<?php }else{ ?>
+				<div class="row">
+					<div class="col-md-12">
+						<img src="<?php echo get_stylesheet_directory_uri();?>/assets/images/banner-default.png"/>
+					</div>
+				</div>				
+				<div class="row">
+					<div class="col-md-12">
+						<div class="caja-asistir">
+							<h4 class="desea-asistir">No disponibles las inscripciones a este evento.</h4>
+						</div>
+					</div>
+				</div>					
+				<?php }?>
 			
 				<div class="alert alert-warning alert-dismissible" style="display: none;" id="gracias-inscrito" role="alert">
 					<p>Hemos recibido tu solicitud de forma correcta.</p>
@@ -83,6 +106,7 @@ if($posts) {
 
 		<form method="post" id="form-eventos" style="display: none;" >
 		  <input type="text" name="email" placeholder="Email*" value="<?php echo $email;?>" >
+		  <input type="hidden" name="evento" value="<?php echo $evento;?>" >
 		  <input type="hidden" name="action" value="guardarInscripcion" >
 		  <!--input type="button" class="btn-enviar" name="btn_enviar" value="Quiero ir!" -->
 		</form>		

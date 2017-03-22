@@ -46,7 +46,7 @@ get_header(); ?>
 				$estado = 0;
 			}
 
-			$encuesta    = esc_url(get_permalink(get_page_by_title('encuesta')))."?email=".$email."&evento=".$evento;
+			$encuesta = esc_url(get_permalink(get_page_by_title('encuesta')))."?email=".$email."&evento=".$evento;
 
 		}else{
 			//echo "No tiene permitido acceder a esta url";

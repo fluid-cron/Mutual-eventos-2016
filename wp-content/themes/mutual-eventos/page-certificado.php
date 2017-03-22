@@ -30,8 +30,8 @@ get_header(); ?>
 				$posts = get_posts(array(
 					'name'      => $evento,
 					'post_type' => 'eventos'
-				));				
-			
+				));	
+				
 				if($posts) {
 					foreach($posts as $post) {
 						$documentos = get_field('contenedor_archivos');
@@ -119,9 +119,9 @@ get_header(); ?>
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-12">
-							<img src="<?php echo $banner; ?>"/>
+							<img src="<?php echo get_stylesheet_directory_uri();?>/assets/images/banner-default.png"/>
 						</div>
-					</div>
+					</div>	
 					<div class="row">
 						<div class="col-md-1 col-sm-1 hidden-xs">&nbsp;</div>
 						<div class="col-md-10 col-sm-10 col-xs-12">

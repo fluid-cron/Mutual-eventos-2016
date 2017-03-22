@@ -1,21 +1,15 @@
 <?php
-
-$evento_option = get_field('evento_activo','option');
-$evento_nombre = $evento_option->post_title;
-$evento_activo = $evento_option->post_name;
-
 add_action( 'wp_ajax_guardarInscripcion', 'guardarInscripcion' );
 add_action( 'wp_ajax_nopriv_guardarInscripcion', 'guardarInscripcion' );
 
 function guardarInscripcion() {
 
 	global $wpdb;
-	global $evento_activo;
-	global $evento_nombre;
 
 	$email = sanitize_text_field($_POST["email"]);
+	$evento = sanitize_text_field($_POST["evento"]);
 
-	$query = "SELECT email FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email' AND evento='$evento_activo'";
+	$query = "SELECT email FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email' AND evento='$evento'";
 	$result = $wpdb->get_results($query);
 
 	$usuario_mutual = count($result);
@@ -24,7 +18,7 @@ function guardarInscripcion() {
 
 		//echo "existe en la base de mutual puede inscribirse";
 
-		$query = "SELECT email FROM {$wpdb->prefix}inscripcion_eventos WHERE email='$email' AND evento='$evento_activo'";
+		$query = "SELECT email FROM {$wpdb->prefix}inscripcion_eventos WHERE email='$email' AND evento='$evento'";
 		$result = $wpdb->get_results($query);
 
 		$usuario_inscripcion = count($result);
@@ -33,13 +27,13 @@ function guardarInscripcion() {
 
 			//echo "se puede inscribir a evento";
 
-			if( $email!="" && $evento_activo!="" ) {
+			if( $email!="" && $evento!="" ) {
 
-				$qr = generarQR($email,$evento_activo);
+				$qr = generarQR($email,$evento);
 
 				if( $qr!="error" ) {
 
-					$query = "SELECT * FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email' AND evento='$evento_activo'";
+					$query = "SELECT * FROM {$wpdb->prefix}usuarios_mutual WHERE email='$email' AND evento='$evento'";
 					$result = $wpdb->get_row($query);					
 					
 					$wpdb->insert(
@@ -50,7 +44,7 @@ function guardarInscripcion() {
 							'empresa'  => $result->empresa,
 							'email'    => $email,
 							'telefono' => $result->telefono,
-							'evento'   => $evento_activo,
+							'evento'   => $evento,
 							'qr'       => $qr
 						),
 						array(
@@ -66,12 +60,13 @@ function guardarInscripcion() {
 
 					$args = array(
 						'post_type'	=> 'eventos',
-						'name'		=> $evento_activo
+						'name'		=> $evento
 					);
 					$the_query = new WP_Query( $args );
 
 					if( $the_query->have_posts() ):
 						while( $the_query->have_posts() ) : $the_query->the_post();
+							$nombre_evento = get_the_title();
 							$banner = get_field("header_email");
 						endwhile;
 					endif;								
@@ -79,7 +74,7 @@ function guardarInscripcion() {
 					$url = get_template_directory_uri().'/mail/';
 
 					$body    = file_get_contents(get_template_directory_uri().'/mail/index.html');
-					$body    = str_replace("[EVENTO]",$evento_nombre,$body);
+					$body    = str_replace("[EVENTO]",$nombre_evento,$body);
 					$body    = str_replace("[NOMBRE]",$result->nombre,$body);
 					$body    = str_replace("[URL]",$url,$body);
 					$body    = str_replace("[BANNER]",$banner,$body);
@@ -87,7 +82,7 @@ function guardarInscripcion() {
 					$headers = array('Content-Type: text/html; charset=UTF-8');
 
 					$mailResult = false;
-					$mailResult = wp_mail($email,'Inscripción al evento '.$evento_nombre, $body ,$headers);					
+					$mailResult = wp_mail($email,'Inscripción al evento '.$nombre_evento, $body ,$headers);					
 
 					if( $mailResult ) {
 						$mailResult = "ok";
@@ -99,8 +94,8 @@ function guardarInscripcion() {
 						$wpdb->prefix.'log_mail',
 						array(
 							'nombre'      => $result->nombre,
-							'evento'      => $evento_nombre,
-							'evento_slug' => $evento_activo,
+							'evento'      => $nombre_evento,
+							'evento_slug' => $evento,
 							'email'       => $email,
 							'banner'      => $banner,
 							'estado'      => $mailResult,
@@ -143,7 +138,6 @@ function guardarInscripcion() {
 function estaInscrito($email,$evento) {
 
 	global $wpdb;
-	//global $evento_activo;
 
 	$query = "SELECT email FROM {$wpdb->prefix}inscripcion_eventos WHERE email='$email' and evento='$evento'";
 	$result = $wpdb->get_results($query);
@@ -278,7 +272,6 @@ function generarQR($email,$evento) {
 	require_once(__DIR__.'/libraries/phpqr/qrlib.php');
 
 	global $wpdb;
-	global $evento_nombre;	
 
 	$time = time();
 	$rand = rand(1,9887657139864654);
@@ -292,11 +285,23 @@ function generarQR($email,$evento) {
 		$nombre  = $result->nombre;
 		$empresa = $result->empresa;
 
+		$args = array(
+			'post_type' => 'eventos',
+			'name'		=> $evento
+		);
+		$the_query = new WP_Query( $args );
+
+		if( $the_query->have_posts() ):
+			while( $the_query->have_posts() ) : $the_query->the_post();
+				$nombre_evento = get_the_title();
+			endwhile;
+		endif;
+
 		$tempDir = get_template_directory().'/temp/qr/'.$qr_name.".png"; 
 
 		$codeContents  = 'Datos Inscripción'."\n"; 
 		$codeContents  .= "Nombre: ".$nombre."\n"; 
-		$codeContents  .= "Evento: ".$evento_nombre."\n"; 
+		$codeContents  .= "Evento: ".$nombre_evento."\n"; 
 		$codeContents  .= "Email: ".$email."\n"; 
 		$codeContents  .= "Empresa: ".$empresa."\n"; 
 
@@ -336,7 +341,7 @@ function generarPDF($email,$evento) {
 
 	//datos evento
 	$args = array(
-		'post_type'		=> 'eventos',
+		'post_type'	=> 'eventos',
 		'name'		=> $evento
 	);
 	$the_query = new WP_Query( $args );
